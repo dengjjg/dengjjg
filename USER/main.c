@@ -56,7 +56,32 @@
 		 GPIO_ResetBits(GPIOB,GPIO_Pin_5);  //LED0对应引脚GPIOB.5拉低，亮  等同LED0
 		 GPIO_SetBits(GPIOB,GPIO_Pin_6);    //LED1对应引脚GPIOB.6拉高，灭  等同LED1
 		 delay_ms(300);	 //延时300ms
-	 }
+		 GPIO_ResetBits(GPIOB,GPIO_Pin_6);  //LED0对应引脚GPIOB.5拉低，亮  等同LED0
+	 }//
+	 delay_ms(300);	 //延时300ms
+	 delay_ms(300);	 //延时300ms
+	 delay_ms(300);	 //延时300ms
+	 delay_ms(300);	 //延时300ms
+	 delay_ms(300);	 //延时300ms
+ }
+
+
+  int main3(void)
+ {
+	 delay_init();	    //延时函数初始化	  
+	 LED_Init();		  	//初始化与LED连接的硬件接口
+	 while(1)
+	 {
+		 GPIO_ResetBits(GPIOB,GPIO_Pin_5);  //LED0对应引脚GPIOB.5拉低，亮  等同LED0
+		 GPIO_SetBits(GPIOB,GPIO_Pin_6);    //LED1对应引脚GPIOB.6拉高，灭  等同LED1
+		 delay_ms(300);	 //延时300ms
+		 GPIO_ResetBits(GPIOB,GPIO_Pin_6);  //LED0对应引脚GPIOB.5拉低，亮  等同LED0
+	 }//
+	 delay_ms(300);	 //延时300ms
+	 delay_ms(300);	 //延时300ms
+	 delay_ms(300);	 //延时300ms
+	 delay_ms(300);	 //延时300ms
+	 delay_ms(300);	 //延时300ms
  }
  /**
  *****************下面注视的代码是通过调用库函数来实现IO控制的方法*****************************************
