@@ -15,23 +15,66 @@
 ************************************************/
  int main1(void);
 
+ extern volatile u32 g_system_ms;
+
+ #define RED_LIGHT_TIME     60000
+ #define GREEN_LIGHT_TIME   30000
+ #define YELLOW_LIGHT_TIME   5000
+
  int main(void)
- {	
-	delay_init();	    //延时函数初始化	  
-	LED_Init();		  	//初始化与LED连接的硬件接口
-	while(1)
-	{
+ {
+		u8 light_state=0;
+		u32 state_start_time=0;
+		u32 current_time;
+
+		LED_Init();		  	//初始化与LED连接的硬件接口
+		if(SysTick_Config(SystemCoreClock/1000))	//配置SysTick每1ms产生一次中断
+		{
+			while(1);
+		}
+
+		//初始状态为红灯
 		LED0=0;
 		LED1=1;
-		delay_ms(300);	 //延时300ms
-		LED0=1;
-		LED1=0;
-		delay_ms(300);	//延时300ms
-		delay_ms(300);	//延时300ms
-		main1();
-	}
- }
 
+		while(1)
+		{
+			current_time=g_system_ms;
+
+			switch(light_state)
+			{
+				case 0:	//红灯60秒
+					if((u32)(current_time-state_start_time)>=RED_LIGHT_TIME)
+					{
+						light_state=1;
+						state_start_time=current_time;
+						LED0=1;
+						LED1=0;
+					}
+					break;
+
+				case 1:	//绿灯30秒
+					if((u32)(current_time-state_start_time)>=GREEN_LIGHT_TIME)
+					{
+						light_state=2;
+						state_start_time=current_time;
+						LED0=0;
+						LED1=0;
+					}
+					break;
+
+				default:	//黄灯5秒
+					if((u32)(current_time-state_start_time)>=YELLOW_LIGHT_TIME)
+					{
+						light_state=0;
+						state_start_time=current_time;
+						LED0=0;
+						LED1=1;
+					}
+					break;
+			}
+		}
+ }
 
  int main1(void)
  {
@@ -56,7 +99,32 @@
 		 GPIO_ResetBits(GPIOB,GPIO_Pin_5);  //LED0对应引脚GPIOB.5拉低，亮  等同LED0
 		 GPIO_SetBits(GPIOB,GPIO_Pin_6);    //LED1对应引脚GPIOB.6拉高，灭  等同LED1
 		 delay_ms(300);	 //延时300ms
-	 }
+		 GPIO_ResetBits(GPIOB,GPIO_Pin_6);  //LED0对应引脚GPIOB.5拉低，亮  等同LED0
+	 }//
+	 delay_ms(300);	 //延时300ms
+	 delay_ms(300);	 //延时300ms
+	 delay_ms(300);	 //延时300ms
+	 delay_ms(300);	 //延时300ms
+	 delay_ms(300);	 //延时300ms
+ }
+
+
+  int main3(void)
+ {
+	 delay_init();	    //延时函数初始化	  
+	 LED_Init();		  	//初始化与LED连接的硬件接口
+	 while(1)
+	 {
+		 GPIO_ResetBits(GPIOB,GPIO_Pin_5);  //LED0对应引脚GPIOB.5拉低，亮  等同LED0
+		 GPIO_SetBits(GPIOB,GPIO_Pin_6);    //LED1对应引脚GPIOB.6拉高，灭  等同LED1
+		 delay_ms(300);	 //延时300ms
+		 GPIO_ResetBits(GPIOB,GPIO_Pin_6);  //LED0对应引脚GPIOB.5拉低，亮  等同LED0
+	 }//
+	 delay_ms(300);	 //延时300ms
+	 delay_ms(300);	 //延时300ms
+	 delay_ms(300);	 //延时300ms
+	 delay_ms(300);	 //延时300ms
+	 delay_ms(300);	 //延时300ms
  }
  /**
  *****************下面注视的代码是通过调用库函数来实现IO控制的方法*****************************************

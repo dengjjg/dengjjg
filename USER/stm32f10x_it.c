@@ -75,8 +75,11 @@ void PendSV_Handler(void)
 {
 }
  
+volatile u32 g_system_ms=0;
+
 void SysTick_Handler(void)
 {
+	g_system_ms++;
 }
 
 /******************************************************************************/
